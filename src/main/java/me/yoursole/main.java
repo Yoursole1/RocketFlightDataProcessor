@@ -5,7 +5,11 @@ import java.util.Arrays;
 public class main {
     public static void main(String[] args){
 
-        QuadRegression r = new QuadRegression(new double[]{1,2,3,4}, new double[]{500,1000,1250,1375});
+        //outputs 924.6598064562378
+
+        QuadRegression r = new QuadRegression(new double[]
+                {1.699, 1.869, 2.23, 1.44, 1.64, 2.215, 2.492, 2.913, 5.355}, new double[]
+                {422.578,454.939, 524.8, 368.131, 409.278,521.891, 569.776, 636.773, 889.782});
         Vector3 v = r.calcQuad();
 
         double vertex = (-1 * v.getY()) / (2 * v.getX());
@@ -13,10 +17,8 @@ public class main {
 
         System.out.println(apogee);
 
-
     }
 }
-
 
 class QuadRegression{
     private final double[] dataX;
@@ -35,6 +37,7 @@ class QuadRegression{
         double x2 = Arrays.stream(dataX).map(operand -> Math.pow(operand, 2)).sum();
         double x1 = Arrays.stream(dataX).sum();
         double n = dataX.length;
+
 
         double x2y = 0;
         for (int i = 0; i < dataX.length; i++) {
@@ -84,7 +87,7 @@ class Matrix3{
          double det = 0;
          for (int i = 0; i < 3; i++) {
              double[][] subMatrix = getSubmatrix(0, i);
-             det += this.matx[0][i] * (subMatrix[0][0] * subMatrix[1][1] - subMatrix[0][1] * subMatrix[1][0]) * (i % 2 == 0 ? 1 : -1) ;
+             det += this.matx[0][i] * (subMatrix[0][0] * subMatrix[1][1] - subMatrix[0][1] * subMatrix[1][0]) * (2 * ((i + 1) % 2) - 1);
          }
          return det;
     }
@@ -97,7 +100,7 @@ class Matrix3{
             double[][] subMatrix = getSubmatrix(i, j);
 
             double coFactor = subMatrix[0][0] * subMatrix[1][1] - subMatrix[0][1] * subMatrix[1][0];
-            inv[j][i] = (coFactor * ((i + j) % 2 == 0 ? 1 : -1)) / det;
+            inv[j][i] = (coFactor * ( 2 * ((i + j + 1) % 2) - 1)) / det;
         }
 
         return new Matrix3(inv);
